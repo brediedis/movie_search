@@ -14,6 +14,13 @@ return [
     |
     */
 
+    'omdb' => [
+        'key' => env('OMDB_API_KEY'),
+        'url' => env('OMDB_API_URL', 'https://www.omdbapi.com/'),
+        'timeout' => (int) env('OMDB_TIMEOUT', 10),
+        'cache_ttl' => (int) env('OMDB_CACHE_TTL', 3600),
+    ],
+
     'postmark' => [
         'key' => env('POSTMARK_API_KEY'),
     ],
