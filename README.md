@@ -1,58 +1,49 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Filmu meklētājs — OMDb movie search
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 13 web app that searches movies through the [OMDb API](https://www.omdbapi.com).
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Search by title**, with an optional filter for movies, series or episodes, and pagination (OMDb returns 10 results per page).
+- **Last 5 searches** are saved in the database and shown in a sidebar. Repeating a search moves it to the top instead of creating a duplicate (case-insensitive, including Latvian letters). The history can be cleared.
+- **Search results** with poster, title, year and type.
+- **Movie details page**: poster, full plot, IMDb rating and votes, Rotten Tomatoes / Metacritic ratings, genre, director, writers, actors, release date, runtime, language, country, awards, box office and a link to IMDb.
+- Friendly error messages (in Latvian) for "not found", "too many results", an invalid/missing API key, the daily request limit and network failures.
+- Successful OMDb responses are cached (1 hour by default) to save the free daily quota.
+- Unit and feature tests. The OMDb API is faked in every test, so **the tests need no API key or network access**.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+You need an OMDb API key. The free tier (1,000 requests/day) is enough: request one at <https://www.omdbapi.com/apikey.aspx> and activate it via the link in the email.
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## Running with Docker
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone git@github.com:brediedis/movie_search.git movie_search
+cd movie_search
+cp .env.example .env # then set OMDB_API_KEY=your-key in .env
+docker compose up --build
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Open <http://localhost:8000>.
 
-## Contributing
+On the first start the container installs Composer dependencies, generates `APP_KEY`, creates the SQLite database and runs the migrations, so it takes a minute. Later starts are quick.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Run the tests:
 
-## Code of Conduct
+```bash
+docker compose exec app php artisan test
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The project folder is mounted into the container, so code changes are visible immediately without rebuilding.
 
-## Security Vulnerabilities
+To use a different port: `APP_PORT=8080 docker compose up` (and update `APP_URL` in `.env`).
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Configuration
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Variable          | Default                     | Description                                    |
+|-------------------|-----------------------------|------------------------------------------------|
+| `OMDB_API_KEY`    | *(empty)*                   | Your OMDb API key (required)                   |
+| `OMDB_API_URL`    | `https://www.omdbapi.com/`  | API base URL                                   |
+| `OMDB_TIMEOUT`    | `10`                        | HTTP timeout in seconds                        |
+| `OMDB_CACHE_TTL`  | `3600`                      | How long successful responses are cached (s)   |
