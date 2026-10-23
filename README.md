@@ -14,7 +14,7 @@ A Laravel 13 web app that searches movies through the [OMDb API](https://www.omd
 
 ## Requirements
 
-You need an OMDb API key. The free tier (1,000 requests/day) is enough: request one at <https://www.omdbapi.com/apikey.aspx> and activate it via the link in the email.
+An OMDb API key is required. Request one at <https://www.omdbapi.com/apikey.aspx> and activate it via the link in the email.
 
 ## Running with Docker
 
