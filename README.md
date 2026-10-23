@@ -10,11 +10,11 @@ A Laravel 13 web app that searches movies through the [OMDb API](https://www.omd
 - **Movie details page**: poster, full plot, IMDb rating and votes, Rotten Tomatoes / Metacritic ratings, genre, director, writers, actors, release date, runtime, language, country, awards, box office and a link to IMDb.
 - Friendly error messages (in Latvian) for "not found", "too many results", an invalid/missing API key, the daily request limit and network failures.
 - Successful OMDb responses are cached (1 hour by default) to save the free daily quota.
-- Unit and feature tests. The OMDb API is faked in every test, so **the tests need no API key or network access**.
+- Unit tests. The OMDb API is faked in every test, so **the tests need no API key or network access**.
 
 ## Requirements
 
-An OMDb API key is required. Request one at <https://www.omdbapi.com/apikey.aspx> and activate it via the link in the email.
+An OMDb API key is required. request one at <https://www.omdbapi.com/apikey.aspx> and activate it via the link in the email.
 
 ## Running with Docker
 
